@@ -1,11 +1,11 @@
-
 import 'package:bottom_nav_layout/bottom_nav_layout.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:serceerpod_app/all_videos_ui.dart';
+import 'package:serceerpod_app/home/all_videos_ui.dart';
 import 'package:serceerpod_app/bottom_bar/home_main_view.dart';
 
-import 'category_view.dart';
-import 'color_constant.dart';
+import 'category/category_view.dart';
+import 'constant/color_constant.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -15,43 +15,36 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       primary: true,
       body: Theme(
-        data: Theme.of(context).copyWith(canvasColor:  ColorConstant.grey2B),
+        data: Theme.of(context).copyWith(canvasColor: ColorConstant.grey2B),
         child: BottomNavLayout(
           lazyLoadPages: true,
           pages: [
-                (navKey) => HomeMainView(
-              navKey: navKey,
-              initialPage: const     AllVideosUi(),
-
-            ),
-                (navKey) => HomeMainView(
-              navKey: navKey,
-              initialPage: const   CategoryView(),
-            ),
-
+            (navKey) =>
+                HomeMainView(navKey: navKey, initialPage: AllVideosUi()),
+            (navKey) =>
+                HomeMainView(navKey: navKey, initialPage: const CategoryView()),
           ],
           bottomNavigationBar: (currentIndex, onTap) => BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (index) => onTap(index),
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            unselectedLabelStyle: TextStyle(
+            unselectedLabelStyle: const TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 10,
             ),
-            selectedLabelStyle: TextStyle(
+            selectedLabelStyle: const TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 10,
             ),
-            unselectedItemColor:   ColorConstant.greyEA,
-            fixedColor:  ColorConstant.greyEA,
+            unselectedItemColor: ColorConstant.greyEA,
+            fixedColor: ColorConstant.greyEA,
             type: BottomNavigationBarType.fixed,
             items: [
               bottomIcon(
@@ -66,38 +59,13 @@ class _HomeViewState extends State<HomeView> {
                 label: 'Category',
                 iconData: Icons.category,
               ),
-
             ],
           ),
           savePageState: true,
         ),
       ),
-    )/*Scaffold(
-      body: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(canvasColor:  ColorConstant.grey2B),
-        child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.category),
-                label: 'Category'
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _selectedIndex,
-            unselectedItemColor:   ColorConstant.greyEA,
-            fixedColor:  ColorConstant.greyEA,
-            iconSize: 24,
-            onTap: _onItemTapped,
-            elevation: 5),
-      ),
-    )*/;
+    );
   }
-
 }
 
 BottomNavigationBarItem bottomIcon({
@@ -109,7 +77,7 @@ BottomNavigationBarItem bottomIcon({
   return BottomNavigationBarItem(
     icon: Container(
       padding: const EdgeInsets.only(bottom: 5, top: 5),
-      child:  Icon(iconData),
+      child: Icon(iconData),
     ),
     label: label,
   );

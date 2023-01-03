@@ -1,4 +1,4 @@
-package com.example.serceerpod_app
+package com.nn_editz_app
 
 import io.flutter.embedding.android.FlutterActivity
 

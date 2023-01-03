@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318459463719",
+    "project_id": "video-app-6ad8b",
+    "storage_bucket": "video-app-6ad8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318459463719:android:b1f5690cf4c3cbd4a0e602",
+        "android_client_info": {
+          "package_name": "com.nn_editz_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318459463719-ofq5pgrgaig72kejbtd21sfk34sh12kk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmQw8PlT8MzZg4_IG8HhVURraxf5DF78w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318459463719-ofq5pgrgaig72kejbtd21sfk34sh12kk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

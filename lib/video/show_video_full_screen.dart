@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serceerpod_app/model/video_list.dart';
-import 'package:serceerpod_app/video_player_stack.dart';
+import 'package:serceerpod_app/video/video_player_stack.dart';
 import 'package:video_player/video_player.dart';
 
 class ShowVideoFullScreen extends StatefulWidget {
@@ -38,11 +38,10 @@ class _ShowVideoFullScreenState extends State<ShowVideoFullScreen> {
     // TODO: implement initState
     super.initState();
   //  WidgetsBinding.instance.addPostFrameCallback((_){
-
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: []);
       videoController = VideoPlayerController.file(
-   File(   '/data/user/0/com.example.serceerpod_app/cache/image_picker5734221428457026525.mp4' )   // widget.videoList!.videoLink!
+   File(  widget.videoList!.videoLink! )   // widget.videoList!.videoLink!
       )..initialize().then((_) {
         videoController!.addListener(
               () => setState(

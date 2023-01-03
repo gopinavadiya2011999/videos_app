@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:serceerpod_app/model/video_list.dart';
 import 'package:video_player/video_player.dart';
 
-import 'color_constant.dart';
+import '../constant/color_constant.dart';
+import '../widgets/inkwell.dart';
 
 class VideoPlayerStack extends StatefulWidget {
   final VideoPlayerController? controller;
@@ -35,7 +36,7 @@ class _VideoPlayerStackState extends State<VideoPlayerStack> {
       children: [
         VideoPlayer(widget.controller!),
           Positioned.fill(
-            child: InkWell(
+            child: inkWell(
                 onTap: (){
                   openDetail=!openDetail;
                   setState(() {
@@ -57,7 +58,7 @@ class _VideoPlayerStackState extends State<VideoPlayerStack> {
             child: SafeArea(
                 child: Row(
               children: [
-                InkWell(
+                inkWell(
                   onTap: () {
                     Navigator.pop(context);
                     SystemChrome.setPreferredOrientations([

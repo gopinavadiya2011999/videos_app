@@ -41,6 +41,11 @@ dependencies:
   bottom_nav_layout: ^3.0.9
   image_picker: ^0.8.6
   sqflite: ^2.2.2
+  fluttertoast: ^8.1.2
+  uuid: ^3.0.7
+  firebase_core: ^2.4.1
+  cloud_firestore: ^4.3.1
+  firebase_database: ^10.0.9
 
 dev_dependencies:
   flutter_test:
