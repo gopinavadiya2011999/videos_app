@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serceerpod_app/model/video_list.dart';
@@ -7,8 +8,8 @@ import 'package:serceerpod_app/video/video_player_stack.dart';
 import 'package:video_player/video_player.dart';
 
 class ShowVideoFullScreen extends StatefulWidget {
-  VideoList? videoList;
-  ShowVideoFullScreen( {
+ final VideoList? videoList;
+  const ShowVideoFullScreen( {
         Key? key, this. videoList,
       }) : super(key: key);
 
@@ -40,8 +41,8 @@ class _ShowVideoFullScreenState extends State<ShowVideoFullScreen> {
   //  WidgetsBinding.instance.addPostFrameCallback((_){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: []);
-      videoController = VideoPlayerController.file(
-   File(  widget.videoList!.videoLink! )   // widget.videoList!.videoLink!
+      videoController = VideoPlayerController.network(
+     widget.videoList!.videoLink!    // widget.videoList!.videoLink!
       )..initialize().then((_) {
         videoController!.addListener(
               () => setState(

@@ -7,9 +7,12 @@ customButton(
     {AlignmentGeometry? alignment,
     String? buttonText,
     GestureTapCallback? onTap,
+      bool progress=false,
+    GestureTapCallback? onLongPress,
     EdgeInsetsGeometry? padding}) {
   return inkWell(
     onTap: onTap,
+    onLongPress:onLongPress ,
     child: Align(
       alignment: alignment ?? Alignment.center,
       child: Container(
@@ -17,9 +20,10 @@ customButton(
           borderRadius: BorderRadius.circular(8),
           color: ColorConstant.grey2B,
         ),
-        padding:
-            padding ?? const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-        child: Text(buttonText!.toUpperCase(),
+        padding: padding,
+        child: progress?Transform.scale(
+            scale: 0.5,
+            child: const CircularProgressIndicator(color: Colors.white)):Text(buttonText!.toUpperCase(),
             style: TextStyle(
                 color: ColorConstant.white,
                 fontSize: 12,

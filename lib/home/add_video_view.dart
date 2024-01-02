@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serceerpod_app/widgets/capitalize_sentence.dart';
 import 'package:serceerpod_app/constant/color_constant.dart';
-import 'package:flutter/src/material/dropdown.dart';
 import 'package:serceerpod_app/video/custom_button.dart';
 import 'package:serceerpod_app/constant/flutter_toast.dart';
 import 'package:serceerpod_app/model/category_model.dart';
-import 'package:serceerpod_app/model/video_list.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
@@ -29,6 +26,7 @@ class _AddVideoViewState extends State<AddVideoView> {
   TextEditingController videoLinkController = TextEditingController();
   List<CategoryModel> categoryModel = [];
   CategoryModel? category;
+  bool isUploading = false;
   XFile? image;
   XFile? video;
   VideoPlayerController? videoController;
@@ -134,8 +132,8 @@ class _AddVideoViewState extends State<AddVideoView> {
                                         .value.position.inSeconds,
                                   ),
                                 );
-                                videoController!.play();
-                                videoController!.setLooping(true);
+                               // videoController!.play();
+                              //  videoController!.setLooping(true);
                               });
                           },
                         ),
@@ -163,8 +161,10 @@ class _AddVideoViewState extends State<AddVideoView> {
                       ),
                     const SizedBox(height: 20),
                     customButton(
+                      progress: isUploading,
+                        padding: EdgeInsets.symmetric(vertical: isUploading?6:18,horizontal: 40),
                         buttonText: 'Add videos',
-                        onTap: () {
+                        onTap: () async {
                           dismissKeyboard(context);
                           if (videoTitleController.text.isEmpty) {
                             showBottomLongToast('Please add video title');
@@ -175,26 +175,31 @@ class _AddVideoViewState extends State<AddVideoView> {
                           } else if (category == null) {
                             showBottomLongToast('Please select category');
                           } else {
-                            Uuid uuid = const Uuid();
+                            isUploading =true;
+                            setState(() {
 
+                            });
+
+                            Uuid uuid = const Uuid();
+                            var time = uuid.v4() +
+                                DateTime.now().millisecondsSinceEpoch.toString();
+                             String imageDownloadURL = await uploadFile( File(image!.path), 'thumbnails/$time.jpg');
+                            String videoDownloadURL = await uploadFile(File(video!.path), 'videos/$time.mp4');
                             FirebaseFirestore.instance
-                                .collection('videos')
-                                .add({'category_name': category!.categoryName,
-                              'category_image': category!.categoryImage,
-                              'video_link': video!.path,
-                              'video_thumbnail': image!.path,
+                                .collection('videos').doc(time)
+                                .set({
+                              'category_id': category!.categoryId,
+                              'video_link': videoDownloadURL,
+                              'video_thumbnail': imageDownloadURL,
                               'delete': 'false',
                               'title': capitalizeAllSentence(
                                   videoTitleController.text.trim()),
-                              'video_id': uuid.v1() +
-                                  DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString(),
+                              'video_id': time,
                               'upload_time': DateTime.now()
                                   .millisecondsSinceEpoch
                                   .toString()
                             });
-
+                            isUploading=false;
                             setState(() {});
                             Navigator.pop(context);
                           }
@@ -358,5 +363,20 @@ class _AddVideoViewState extends State<AddVideoView> {
         ],
       ),
     );
+  }
+
+}
+Future<String> uploadFile(File file, String storagePath) async {
+  try {
+    Reference storageReference = FirebaseStorage.instance.ref().child(storagePath);
+    UploadTask uploadTask = storageReference.putFile(file);
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    // Get the download URL
+    String downloadURL = await taskSnapshot.ref.getDownloadURL();
+    return downloadURL;
+  } catch (e) {
+    print('Error uploading file to Firebase Storage: $e');
+    throw e; // Rethrow the error to indicate failure
   }
 }

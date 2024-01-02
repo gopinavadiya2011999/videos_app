@@ -33,8 +33,8 @@ class _CategoryViewState extends State<CategoryView> {
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: CircularProgressIndicator(color: ColorConstant.black00),
                       );
                     } else if (snapshot.hasData &&
                         snapshot.data!.docs.isNotEmpty) {
@@ -317,9 +317,38 @@ class _CategoryViewState extends State<CategoryView> {
                 Positioned.fill(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30),
-                    child: Image.file(
-                        File(category['category_image']),
-                        fit: BoxFit.fill),
+                    child: Stack(
+                      children: [
+                        Image.network(
+                            category['category_image'],
+
+                            fit: BoxFit.fill),
+                        Positioned(
+
+                            child: Container(
+
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                const Color(0xff000000).withOpacity(0.75), const Color(0xff000000).withOpacity(0)
+                              ]
+                            )
+                          ),
+                        )),
+                        Positioned(
+                          bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.only(bottom: 10,top: 5,right: 15,left: 15),
+
+                                child: Text(category['category_name'], style: TextStyle(fontFamily: 'Montserrat',
+                                    fontSize: 12, color: ColorConstant.white, fontWeight:
+                                    FontWeight.w500),)))
+                      ],
+                    ),
                   ),
                 ),
                 if (checkBox)

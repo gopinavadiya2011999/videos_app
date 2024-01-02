@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:serceerpod_app/home/add_video_view.dart';
 import 'package:serceerpod_app/widgets/capitalize_sentence.dart';
 import 'package:serceerpod_app/video/custom_button.dart';
 import 'package:serceerpod_app/widgets/custom_text_field.dart';
@@ -19,7 +20,7 @@ class AddCategory extends StatefulWidget {
 
 class _AddCategoryState extends State<AddCategory> {
   TextEditingController categoryNameController = TextEditingController();
-
+bool isCatLoading=false;
   XFile? image;
 
   @override
@@ -44,6 +45,7 @@ class _AddCategoryState extends State<AddCategory> {
                       controller: categoryNameController),
                   const SizedBox(height: 20),
                   customButton(
+                      padding: const EdgeInsets.symmetric(horizontal: 40,vertical:18),
                       buttonText: 'Pick Image',
                       onTap: () async {
                         final ImagePicker picker = ImagePicker();
@@ -64,18 +66,25 @@ class _AddCategoryState extends State<AddCategory> {
                     ),
                   const SizedBox(height: 20),
                   customButton(
+                    padding: EdgeInsets.symmetric(horizontal: 40,vertical: isCatLoading?8:18),
+                    progress: isCatLoading,
                     buttonText: "Add Category",
-                    onTap: () {
+                    onTap: () async {
                       dismissKeyboard(context);
                       if (categoryNameController.text.isEmpty) {
                         showBottomLongToast('Please enter category name');
                       } else if (image == null) {
                         showBottomLongToast('Please select category image');
                       } else {
+                        isCatLoading =true;
+                        setState(() {
+
+                        });
                         Uuid uuid = const Uuid();
 
                         var time = uuid.v4() +
                             DateTime.now().millisecondsSinceEpoch.toString();
+                        String imageDownloadURL = await uploadFile( File(image!.path), 'catImage/$time.jpg');
                         FirebaseFirestore.instance
                             .collection('categories')
                             .doc(time)
@@ -84,12 +93,12 @@ class _AddCategoryState extends State<AddCategory> {
                           'category_name': capitalizeAllSentence(
                                   categoryNameController.text.trim())
                               .toString(),
-                          'category_image': image!.path.toString(),
+                          'category_image': imageDownloadURL,
                           'category_id': time,
                           'upload_time':
                               DateTime.now().millisecondsSinceEpoch.toString()
                         }, SetOptions(merge: true));
-
+                        isCatLoading=false;
                         setState(() {});
                         Navigator.pop(context);
 
