@@ -42,8 +42,12 @@ class _HomeViewState extends State<HomeView> {
               fontFamily: 'Montserrat',
               fontSize: 10,
             ),
-            unselectedItemColor: ColorConstant.greyEA,
-            fixedColor: ColorConstant.greyEA,
+            landscapeLayout:BottomNavigationBarLandscapeLayout.linear ,
+            selectedItemColor: Colors.white,
+            enableFeedback: false,
+            unselectedItemColor: ColorConstant.white.withOpacity(0.5),
+            // fixedColor: ColorConstant.greyEA,
+            elevation: 0,
             type: BottomNavigationBarType.fixed,
             items: [
               bottomIcon(
@@ -60,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ],
           ),
-          savePageState: true,
+          // savePageState: true,
         ),
       ),
     );

@@ -1,16 +1,14 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:serceerpod_app/home/add_video_view.dart';
 import 'package:serceerpod_app/model/category_model.dart';
 import 'package:serceerpod_app/video/show_video_full_screen.dart';
 import 'package:serceerpod_app/model/video_list.dart';
+import 'package:serceerpod_app/video/video_detail_screen.dart';
+import 'package:serceerpod_app/video/video_player_stack.dart';
 import '../constant/color_constant.dart';
 import '../video/custom_button.dart';
 import '../widgets/inkwell.dart';
@@ -248,8 +246,15 @@ class _HomeUIState extends State<AllVideosUi> {
               playDownloadIcon(
                 icon: Icons.download,
                 onTap: () async {
-                  await requestPermission();
-                  downloadFile(videoList.videoLink!);
+                  final status = await Permission.photos.status;
+                  if (status.isDenied) {
+                    await Permission.storage.request();
+                    await Permission.photos.request();
+                    downloadWallpaper(videoList.videoLink!, context);
+                  } else {
+                    downloadWallpaper(videoList.videoLink!, context);
+                  }
+
                   print("video link :: ${videoList.videoLink}");
                 },
               ),
@@ -279,14 +284,11 @@ class _HomeUIState extends State<AllVideosUi> {
   void onFullScreenClick({required VideoList videoLink}) {
     Navigator.of(context, rootNavigator: true)
         .push(MaterialPageRoute(
-      builder: (context) => ShowVideoFullScreen(videoList: videoLink),
-    ))
-        .then((value) {
-      value;
-    });
-    SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
-    );
+      builder: (context) => VideoDetailScreen(videoList: videoLink)/*ShowVideoFullScreen(videoList: videoLink)*/,
+    ));
+    // SystemChrome.setPreferredOrientations(
+    //   [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+    // );
   }
 
   _appbar() {
@@ -389,23 +391,80 @@ class _HomeUIState extends State<AllVideosUi> {
       }
     }
   }
-
-  Future<void> downloadFile(String fileUrl) async {
-    Dio dio = Dio();
-
-    try {
-      // Get the temporary directory using path_provider
-      Directory? appDocDir = await getDownloadsDirectory();
-      String savePath = "${appDocDir!.path}/$fileUrl.mp4";
-
-      // Download the file using Dio
-      await dio.download(fileUrl, savePath);
-
-      print("File downloaded to: $savePath");
-    } catch (error) {
-      print("Error downloading file: $error");
-    }
+  showLoadingDialog({required String description,required BuildContext context}){
+   showDialog(
+     builder: (context) {
+       return AlertDialog(
+         shadowColor: Colors.transparent,
+         backgroundColor: Colors.transparent,
+         surfaceTintColor: Colors.transparent,
+         content: Center(
+           child: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               Container(
+                 padding: const EdgeInsets.all(20),
+                 margin: const EdgeInsets.symmetric(horizontal: 30),
+                 decoration: BoxDecoration(
+                   color: ColorConstant.black00,
+                   borderRadius: BorderRadius.circular(20),
+                 ),
+                 child: Center(
+                   child: Column(
+                     children: [
+                       const CircularProgressIndicator(),
+                       const SizedBox(height: 10,),
+                       Text(description,style:  TextStyle(color: ColorConstant.white),)
+                     ],
+                   ),
+                 ),
+               ),
+             ],
+           ),
+         ),
+       );
+     } , context: context,
+    );
   }
+  void downloadWallpaper(String imageUrl,BuildContext context) {
+    showLoadingDialog(description: "Downloading...", context: context);
+    FileDownloader.downloadFile(
+        url: imageUrl,
+        // name: **OPTIONAL**, //THE FILE NAME AFTER DOWNLOADING,
+        onProgress: (fileName, progress) {
+          debugPrint("FILE DOWNLOADING PROGRESS $progress");
+        },
+        onDownloadCompleted: (String path) {
+          debugPrint('FILE DOWNLOADED TO PATH: $path');
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Video Downloaded!")));
+
+        },
+        onDownloadError: (String error) {
+          debugPrint('DOWNLOAD ERROR: $error');
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Error Downloading Video!")));
+
+        });
+  }
+
+  //
+  // Future<void> downloadFile(String fileUrl) async {
+  //   Dio dio = Dio();
+  //
+  //   try {
+  //     // Get the temporary directory using path_provider
+  //     Directory? appDocDir = await getDownloadsDirectory();
+  //     String savePath = "${appDocDir!.path}/$fileUrl.mp4";
+  //
+  //     // Download the file using Dio
+  //     await dio.download(fileUrl, savePath);
+  //
+  //     print("File downloaded to: $savePath");
+  //   } catch (error) {
+  //     print("Error downloading file: $error");
+  //   }
+  // }
 
   //  Future downloadFile(String downloadUrl) async {
   //   final Reference ref = FirebaseStorage.instance.refFromURL(downloadUrl);

@@ -260,9 +260,9 @@ class _CategoryViewState extends State<CategoryView> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Icon(Icons.search, color: ColorConstant.grey2B, size: 24),
+          //Icon(Icons.search, color: ColorConstant.grey2B, size: 24),
           Text(
             "NN EDITZ",
             style: TextStyle(
@@ -319,10 +319,12 @@ class _CategoryViewState extends State<CategoryView> {
                     borderRadius: BorderRadius.circular(30),
                     child: Stack(
                       children: [
-                        Image.network(
-                            category['category_image'],
+                        Positioned.fill(
+                          child: Image.network(
+                              category['category_image'],
 
-                            fit: BoxFit.fill),
+                              fit: BoxFit.fill),
+                        ),
                         Positioned(
 
                             child: Container(

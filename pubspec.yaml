@@ -47,9 +47,9 @@ dependencies:
   cloud_firestore: ^4.3.1
   firebase_database: ^10.0.9
   firebase_storage: ^11.5.6
-  path_provider: ^2.1.1
   permission_handler: ^11.1.0
-  dio: ^5.4.0
+  flutter_file_downloader: ^1.2.0
+  appinio_video_player: ^1.2.2
 
 dev_dependencies:
   flutter_test:

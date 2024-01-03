@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serceerpod_app/model/video_list.dart';
@@ -38,7 +36,8 @@ class _ShowVideoFullScreenState extends State<ShowVideoFullScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  //  WidgetsBinding.instance.addPostFrameCallback((_){
+    print("object:::::: ${ widget.videoList!.videoLink! }");
+   // WidgetsBinding.instance.addPostFrameCallback((_){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: []);
       videoController = VideoPlayerController.network(
@@ -51,8 +50,7 @@ class _ShowVideoFullScreenState extends State<ShowVideoFullScreen> {
           ),
         );
         videoController!.play();
-      });
-   // });
+      }); //});
 
   }
 

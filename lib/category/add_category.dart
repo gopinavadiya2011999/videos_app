@@ -84,7 +84,7 @@ bool isCatLoading=false;
 
                         var time = uuid.v4() +
                             DateTime.now().millisecondsSinceEpoch.toString();
-                        String imageDownloadURL = await uploadFile( File(image!.path), 'catImage/$time.jpg');
+                        String imageDownloadURL = await uploadFile(File(image!.path),'catImage/$time.jpg');
                         FirebaseFirestore.instance
                             .collection('categories')
                             .doc(time)

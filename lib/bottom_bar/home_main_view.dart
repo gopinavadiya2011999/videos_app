@@ -1,4 +1,3 @@
-//bottom navigation navigator main class
 import 'package:flutter/material.dart';
 
 class HomeMainView extends StatelessWidget {

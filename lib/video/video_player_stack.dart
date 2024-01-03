@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serceerpod_app/model/video_list.dart';
@@ -36,16 +35,14 @@ class _VideoPlayerStackState extends State<VideoPlayerStack> {
     return Stack(
       children: [
         VideoPlayer(widget.controller!),
-          Positioned.fill(
-            child: inkWell(
-                onTap: (){
-                  openDetail=!openDetail;
-                  setState(() {
+          inkWell(
+              onTap: (){
+                openDetail=!openDetail;
+                setState(() {
 
-                  });
-                },
-                child: Container(color: openDetail?ColorConstant.black00.withOpacity(.5):ColorConstant.transparent)),
-          ),
+                });
+              },
+              child: Container(color: openDetail?ColorConstant.black00.withOpacity(.5):ColorConstant.transparent)),
         if (openDetail)
         _showVideoProgressIndicator(
           controller: widget.controller!,

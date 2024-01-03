@@ -1,8 +1,8 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serceerpod_app/constant/color_constant.dart';
-import 'constant/firebase_options.dart';
 import 'home_view.dart';
 
 Future<void> main() async {
@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
             titleTextStyle: const TextStyle(color: Colors.black)),
       ),
       debugShowCheckedModeBanner: false,
-
       home: const HomeView(),
     );
   }
