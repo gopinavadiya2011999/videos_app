@@ -2,12 +2,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
+import 'package:nn_editz_app/splash_screen.dart';
 import 'home_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(  );
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.black));
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
             titleTextStyle: const TextStyle(color: Colors.black)),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeView(),
+      home: const SplashScreen(),
     );
   }
 }

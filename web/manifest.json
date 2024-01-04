@@ -1,6 +1,6 @@
 {
-    "name": "serceerpod_app",
-    "short_name": "serceerpod_app",
+    "name": "nn_editz_app",
+    "short_name": "nn_editz_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -3,8 +3,8 @@ import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
-import 'package:serceerpod_app/model/video_list.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
+import 'package:nn_editz_app/model/video_list.dart';
 
 
 class VideoDetailScreen extends StatefulWidget {

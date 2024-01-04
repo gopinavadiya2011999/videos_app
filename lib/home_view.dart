@@ -1,7 +1,7 @@
 import 'package:bottom_nav_layout/bottom_nav_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:serceerpod_app/home/all_videos_ui.dart';
-import 'package:serceerpod_app/bottom_bar/home_main_view.dart';
+import 'package:nn_editz_app/home/all_videos_ui.dart';
+import 'package:nn_editz_app/bottom_bar/home_main_view.dart';
 
 import 'category/category_view.dart';
 import 'constant/color_constant.dart';

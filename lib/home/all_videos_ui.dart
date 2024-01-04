@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:serceerpod_app/home/add_video_view.dart';
-import 'package:serceerpod_app/model/category_model.dart';
-import 'package:serceerpod_app/video/show_video_full_screen.dart';
-import 'package:serceerpod_app/model/video_list.dart';
-import 'package:serceerpod_app/video/video_detail_screen.dart';
-import 'package:serceerpod_app/video/video_player_stack.dart';
+import 'package:nn_editz_app/home/add_video_view.dart';
+import 'package:nn_editz_app/model/category_model.dart';
+import 'package:nn_editz_app/video/show_video_full_screen.dart';
+import 'package:nn_editz_app/model/video_list.dart';
+import 'package:nn_editz_app/video/video_detail_screen.dart';
+import 'package:nn_editz_app/video/video_player_stack.dart';
 import '../constant/color_constant.dart';
 import '../video/custom_button.dart';
 import '../widgets/inkwell.dart';
@@ -97,7 +97,7 @@ class _HomeUIState extends State<AllVideosUi> {
               filterOn?
                 Expanded(
                   child: newVideoList.isEmpty&& filterOn
-                      ? const Center(child: Text("No Category Found"))
+                      ? const Center(child: Text("No Videos Found"))
                       : SingleChildScrollView(
                           child: Column(
                             children: [const SizedBox(height: 20), ..._listView2(newVideoList: newVideoList)],
@@ -169,7 +169,7 @@ class _HomeUIState extends State<AllVideosUi> {
                         children: [
                           _addButton(),
                           const SizedBox(height: 10),
-                          const Text("No Category Found"),
+                          const Text("No Videos Found"),
                         ],
                       );
                     }

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "serceerpod_app" "\0"
+            VALUE "FileDescription", "nn_editz_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "serceerpod_app" "\0"
+            VALUE "InternalName", "nn_editz_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "serceerpod_app.exe" "\0"
-            VALUE "ProductName", "serceerpod_app" "\0"
+            VALUE "OriginalFilename", "nn_editz_app.exe" "\0"
+            VALUE "ProductName", "nn_editz_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

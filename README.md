@@ -1,4 +1,4 @@
-# serceerpod_app
+# nn_editz_app
 
 A new Flutter project.
 

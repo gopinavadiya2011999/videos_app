@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:serceerpod_app/widgets/capitalize_sentence.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
-import 'package:serceerpod_app/video/custom_button.dart';
-import 'package:serceerpod_app/constant/flutter_toast.dart';
-import 'package:serceerpod_app/model/category_model.dart';
+import 'package:nn_editz_app/widgets/capitalize_sentence.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
+import 'package:nn_editz_app/video/custom_button.dart';
+import 'package:nn_editz_app/constant/flutter_toast.dart';
+import 'package:nn_editz_app/model/category_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 

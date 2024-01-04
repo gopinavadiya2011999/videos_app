@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:serceerpod_app/video/custom_button.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
+import 'package:nn_editz_app/video/custom_button.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
 import '../widgets/inkwell.dart';
 import 'add_category.dart';
 

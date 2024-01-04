@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:serceerpod_app/model/video_list.dart';
-import 'package:serceerpod_app/video/video_player_stack.dart';
+import 'package:nn_editz_app/model/video_list.dart';
+import 'package:nn_editz_app/video/video_player_stack.dart';
 import 'package:video_player/video_player.dart';
 
 class ShowVideoFullScreen extends StatefulWidget {

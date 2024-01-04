@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
 
 customTextField(
     {required String hintText,

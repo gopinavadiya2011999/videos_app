@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:serceerpod_app/constant/color_constant.dart';
+import 'package:nn_editz_app/constant/color_constant.dart';
 
 import '../widgets/inkwell.dart';
 

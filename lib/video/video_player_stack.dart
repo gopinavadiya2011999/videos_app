@@ -1,7 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:serceerpod_app/model/video_list.dart';
+import 'package:nn_editz_app/model/video_list.dart';
 import 'package:video_player/video_player.dart';
 
 import '../constant/color_constant.dart';
