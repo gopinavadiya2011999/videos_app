@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nn_editz_app/video/custom_button.dart';
 import 'package:nn_editz_app/constant/color_constant.dart';
+import 'package:shimmer/shimmer.dart';
 import '../widgets/inkwell.dart';
 import 'add_category.dart';
 
@@ -320,9 +322,12 @@ class _CategoryViewState extends State<CategoryView> {
                     child: Stack(
                       children: [
                         Positioned.fill(
-                          child: Image.network(
-                              category['category_image'],
-
+                          child: CachedNetworkImage(
+                              imageUrl: category['category_image'],
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.grey.withOpacity(0.2),
+                                  child: Container(color: ColorConstant.black00)),
                               fit: BoxFit.fill),
                         ),
                         Positioned(

@@ -1,6 +1,6 @@
-import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:nn_editz_app/home_view.dart';
+import 'package:nn_editz_app/video_player/appinio_video_player.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

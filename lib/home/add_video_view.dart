@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nn_editz_app/model/video_list.dart';
 import 'package:nn_editz_app/widgets/capitalize_sentence.dart';
 import 'package:nn_editz_app/constant/color_constant.dart';
 import 'package:nn_editz_app/video/custom_button.dart';
@@ -14,7 +15,8 @@ import 'package:video_player/video_player.dart';
 import '../widgets/inkwell.dart';
 
 class AddVideoView extends StatefulWidget {
-  const AddVideoView({Key? key}) : super(key: key);
+  final VideoList ?videoList ;
+   const AddVideoView({Key? key, this.videoList}) : super(key: key);
 
   @override
   State<AddVideoView> createState() => _AddVideoViewState();
@@ -23,7 +25,6 @@ class AddVideoView extends StatefulWidget {
 class _AddVideoViewState extends State<AddVideoView> {
   final ImagePicker picker = ImagePicker();
   TextEditingController videoTitleController = TextEditingController();
-  TextEditingController videoLinkController = TextEditingController();
   List<CategoryModel> categoryModel = [];
   CategoryModel? category;
   bool isUploading = false;
@@ -36,6 +37,29 @@ class _AddVideoViewState extends State<AddVideoView> {
     // TODO: implement initState
     super.initState();
     getCategory();
+    print("999999:: ${widget.videoList!.title}");
+    if(widget.videoList!=null ){
+    videoTitleController.text=widget.videoList!.title??"";
+
+    if(widget.videoList!.videoLink!=null){
+      videoController = VideoPlayerController.networkUrl(Uri.parse( widget.videoList!.videoLink!)
+      )
+        ..initialize().then((_) {
+          videoController!.addListener(
+                () => setState(
+                  () => videoController!
+                  .value.position.inSeconds,
+            ),
+          );
+        });
+    }
+    setState(() {});
+
+        // videoController!.play();
+        //  videoController!.setLooping(true);
+
+    }
+    setState(() {});
   }
 
   @override
@@ -108,7 +132,7 @@ class _AddVideoViewState extends State<AddVideoView> {
                         customButton(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15),
-                            buttonText: 'Pick Image',
+                            buttonText: widget.videoList!=null && widget.videoList!.videoThumbnail!=null?'Change Image': 'Pick Image',
                             onTap: () async {
                               image = await picker.pickImage(
                                   source: ImageSource.gallery);
@@ -117,7 +141,7 @@ class _AddVideoViewState extends State<AddVideoView> {
                         customButton(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
-                          buttonText: 'Pick Video',
+                          buttonText:widget.videoList!=null && widget.videoList!.videoLink!=null?'Change Video': 'Pick Video',
                           onTap: () async {
                             video = await picker.pickVideo(
                                 source: ImageSource.gallery);
@@ -139,19 +163,23 @@ class _AddVideoViewState extends State<AddVideoView> {
                         ),
                       ],
                     ),
-                    if (image != null || video != null)
+                    if (image != null || video != null || widget.videoList!.videoLink!=null || widget.videoList!.videoThumbnail!=null)
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            if (image != null)
-                              SizedBox(
+                            if (image != null|| widget.videoList!.videoThumbnail!=null)
+                              image != null?    SizedBox(
                                   height: 150,
                                   width: 150,
                                   child: Image.file(File(image!.path),
+                                      fit: BoxFit.fill)):SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: Image.network(widget.videoList!.videoThumbnail!,
                                       fit: BoxFit.fill)),
-                            if (video != null)
+                            if ((video != null|| widget.videoList!.videoLink!=null) && videoController!=null)
                               SizedBox(
                                   height: 150,
                                   width: 150,
@@ -163,14 +191,14 @@ class _AddVideoViewState extends State<AddVideoView> {
                     customButton(
                       progress: isUploading,
                         padding: EdgeInsets.symmetric(vertical: isUploading?6:18,horizontal: 40),
-                        buttonText: 'Add videos',
+                        buttonText:widget.videoList!=null && widget.videoList!.videoLink!=null?'Edit Video':  'Add video',
                         onTap: () async {
                           dismissKeyboard(context);
                           if (videoTitleController.text.isEmpty) {
                             showBottomLongToast('Please add video title');
-                          } else if (video == null) {
+                          } else if (video == null && widget.videoList==null &&widget.videoList!.videoLink==null) {
                             showBottomLongToast('Please add video');
-                          } else if (image == null) {
+                          } else if (image == null && widget.videoList==null &&widget.videoList!.videoThumbnail==null) {
                             showBottomLongToast('Please add image');
                           } else if (category == null) {
                             showBottomLongToast('Please select category');
@@ -181,24 +209,45 @@ class _AddVideoViewState extends State<AddVideoView> {
                             });
 
                             Uuid uuid = const Uuid();
-                            var time = uuid.v4() +
-                                DateTime.now().millisecondsSinceEpoch.toString();
-                             String imageDownloadURL = await uploadFile( File(image!.path), 'thumbnails/$time.jpg');
-                            String videoDownloadURL = await uploadFile(File(video!.path), 'videos/$time.mp4');
-                            FirebaseFirestore.instance
-                                .collection('videos').doc(time)
-                                .set({
-                              'category_id': category!.categoryId,
-                              'video_link': videoDownloadURL,
-                              'video_thumbnail': imageDownloadURL,
-                              'delete': 'false',
-                              'title': capitalizeAllSentence(
-                                  videoTitleController.text.trim()),
-                              'video_id': time,
-                              'upload_time': DateTime.now()
-                                  .millisecondsSinceEpoch
-                                  .toString()
-                            });
+
+
+                            if(widget.videoList!=null){
+                              String imageDownloadURL = image!=null?await uploadFile( File(image!.path), 'thumbnails/${widget.videoList!.videoId!}.jpg'):"";
+                              String videoDownloadURL = video!=null?await uploadFile(File(video!.path), 'videos/${widget.videoList!.videoId!}.mp4'):"";
+                              FirebaseFirestore.instance
+                                  .collection('videos').doc(widget.videoList!.videoId!)
+                                  .update({
+                                'category_id': category!.categoryId,
+                                'video_link': videoDownloadURL.isNotEmpty?videoDownloadURL:widget.videoList!.videoLink!,
+                                'video_thumbnail': imageDownloadURL.isNotEmpty?imageDownloadURL:widget.videoList!.videoThumbnail!,
+                                'delete': 'false',
+                                'title': capitalizeAllSentence(
+                                    videoTitleController.text.trim()),
+                                'video_id': widget.videoList!.videoId!,
+                                'upload_time': DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString()
+                              });
+                            }else{
+                              var time = uuid.v4() +
+                                  DateTime.now().millisecondsSinceEpoch.toString();
+                              String imageDownloadURL = await uploadFile( File(image!.path), 'thumbnails/$time.jpg');
+                              String videoDownloadURL = await uploadFile(File(video!.path), 'videos/$time.mp4');
+                              FirebaseFirestore.instance
+                                  .collection('videos').doc(time)
+                                  .set({
+                                'category_id': category!.categoryId,
+                                'video_link': videoDownloadURL,
+                                'video_thumbnail': imageDownloadURL,
+                                'delete': 'false',
+                                'title': capitalizeAllSentence(
+                                    videoTitleController.text.trim()),
+                                'video_id': time,
+                                'upload_time': DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString()
+                              });
+                            }
                             isUploading=false;
                             setState(() {});
                             Navigator.pop(context);
@@ -226,6 +275,10 @@ class _AddVideoViewState extends State<AddVideoView> {
           categoryId: element['category_id'],
           delete: element['delete']=='true'?true:false));
     }).toList();
+    setState(() {});
+    if(categoryModel.isNotEmpty && categoryModel.where((element) => element.categoryId==widget.videoList!.categoryImage).isNotEmpty) {
+      category = categoryModel.where((element) => element.categoryId==widget.videoList!.categoryImage).first;
+    }
     setState(() {});
 
    }

@@ -1,10 +1,11 @@
 
-import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nn_editz_app/constant/color_constant.dart';
 import 'package:nn_editz_app/model/video_list.dart';
+
+import '../video_player/appinio_video_player.dart';
 
 
 class VideoDetailScreen extends StatefulWidget {
@@ -21,10 +22,9 @@ class _MyHomePageState extends State<VideoDetailScreen> {
       _videoPlayerController3;
 
    CustomVideoPlayerController ?_customVideoPlayerController;
-  late CustomVideoPlayerWebController _customVideoPlayerWebController;
 
   final CustomVideoPlayerSettings _customVideoPlayerSettings =
-  const CustomVideoPlayerSettings(showSeekButtons: true);
+   CustomVideoPlayerSettings(showSeekButtons: true);
 
   // final CustomVideoPlayerWebSettings _customVideoPlayerWebSettings =
   // CustomVideoPlayerWebSettings(

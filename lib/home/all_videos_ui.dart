@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:nn_editz_app/video/show_video_full_screen.dart';
 import 'package:nn_editz_app/model/video_list.dart';
 import 'package:nn_editz_app/video/video_detail_screen.dart';
 import 'package:nn_editz_app/video/video_player_stack.dart';
+import 'package:shimmer/shimmer.dart';
 import '../constant/color_constant.dart';
 import '../video/custom_button.dart';
 import '../widgets/inkwell.dart';
@@ -78,7 +80,7 @@ class _HomeUIState extends State<AllVideosUi> {
           videoId: element['video_id'],
           delete: element['delete'] == 'true' ? true : false));
     }).toList();
-    videoList.sort((a, b) => a.uploadTime!.compareTo(b.uploadTime!));
+    videoList.sort((a, b) => b.uploadTime!.compareTo(a.uploadTime!));
     setState(() {});
     return videoList;
   }
@@ -242,7 +244,6 @@ class _HomeUIState extends State<AllVideosUi> {
           VerticalDivider(thickness: 1.5, color: ColorConstant.grey2B),
           Column(
             children: [
-              playDownloadIcon(onTap: () => onFullScreenClick(videoLink: videoList), icon: Icons.play_arrow),
               playDownloadIcon(
                 icon: Icons.download,
                 onTap: () async {
@@ -258,6 +259,10 @@ class _HomeUIState extends State<AllVideosUi> {
                   print("video link :: ${videoList.videoLink}");
                 },
               ),
+              playDownloadIcon(onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddVideoView(videoList:videoList),));
+              }, icon: Icons.edit),
             ],
           )
         ]),
@@ -574,15 +579,34 @@ class _HomeUIState extends State<AllVideosUi> {
         children: [
           Column(
             children: [
-              SizedBox(
-                  height: MediaQuery.of(context).size.height / 4.5,
-                  width: double.infinity,
-                  child: ClipRRect(borderRadius: BorderRadius.circular(30), child: Image.network(value.videoThumbnail!, fit: BoxFit.fill))),
-              // Text( getVideoTime(videoLink: videoList[index].videoLink!),
-              //         style: const TextStyle(
-              //           fontSize: 12,
-              //           fontWeight: FontWeight.w500,
-              //         )),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height / 4.5,
+                      width: double.infinity,
+                      child: ClipRRect(borderRadius: BorderRadius.circular(30), child: CachedNetworkImage(
+                          imageUrl: value.videoThumbnail!,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.withOpacity(0.5),
+
+                              highlightColor: Colors.grey.withOpacity(0.2),
+                              child: Container(color: ColorConstant.black00)),
+
+                          fit: BoxFit.fill))),
+                  Positioned(
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          color: ColorConstant.white.withOpacity(0.5),
+                          shape: BoxShape.circle
+                      ),
+                      child: playDownloadIcon(onTap: () => onFullScreenClick(videoLink: value), icon: Icons.play_arrow),
+                    ),
+                  ),
+                ],
+              ),
               _rowView(videoList: value)
             ],
           ),
